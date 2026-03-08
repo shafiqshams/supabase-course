@@ -88,7 +88,9 @@ function App() {
 
       {/* List of Tasks */}
       <ul style={{ listStyle: "none", padding: 0 }}>
+        {tasks.map((task) => (
         <li
+            key={task.id}
           style={{
             border: "1px solid #ccc",
             borderRadius: "4px",
@@ -97,8 +99,8 @@ function App() {
           }}
         >
           <div>
-            <h3>Title</h3>
-            <p>Description</p>
+              <h3>{task.title}</h3>
+              <p>{task.desc}</p>
             <div>
               <button style={{ padding: "0.5rem 1rem", marginRight: "0.5rem" }}>
                 Edit
@@ -107,6 +109,7 @@ function App() {
             </div>
           </div>
         </li>
+        ))}
       </ul>
     </div>
   );
