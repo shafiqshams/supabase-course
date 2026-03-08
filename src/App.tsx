@@ -28,6 +28,7 @@ function App() {
     }
 
     setNewTask(initialState);
+    fetchTasks();
   };
 
   const handleDelete = async (id: number) => {
@@ -37,6 +38,8 @@ function App() {
       console.error("Error deleting task: ", error.message);
       return;
     }
+
+    fetchTasks();
   };
 
   useEffect(() => {
