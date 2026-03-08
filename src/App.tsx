@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { type SubmitEvent, useState } from "react";
 import "./App.css";
 import supabase from "./lib/supabase";
 
