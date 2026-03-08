@@ -1,4 +1,4 @@
-import { type SubmitEvent, useState } from "react";
+import { type SubmitEvent, useEffect, useState } from "react";
 import "./App.css";
 import supabase from "./lib/supabase";
 
@@ -7,8 +7,17 @@ const initialState = {
   desc: "",
 };
 
+interface Task {
+  id: number;
+  title: string;
+  desc: string;
+  created_at: string;
+}
+
 function App() {
   const [newTask, setNewTask] = useState(initialState);
+  const [tasks, setTasks] = useState<Task[]>([]);
+
   const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
     const { error } = await supabase.from("tasks").insert(newTask).single();
@@ -20,6 +29,27 @@ function App() {
 
     setNewTask(initialState);
   };
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const { error, data } = await supabase
+        .from("tasks")
+        .select("*")
+        .order("created_at", {
+          ascending: true,
+        });
+
+      if (error) {
+        console.error("Error adding task: ", error.message);
+        return;
+      }
+
+      setTasks(data);
+    };
+
+    fetchTasks();
+  }, []);
+
   return (
     <div style={{ maxWidth: "600px", margin: "0 auto", padding: "1rem" }}>
       <h2>Task Manager CRUD</h2>
