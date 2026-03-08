@@ -31,6 +31,17 @@ function App() {
     fetchTasks();
   };
 
+  const handleUpdateTask = async (id: number) => {
+    const { error } = await supabase.from("tasks").update(newTask).eq("id", id);
+
+    if (error) {
+      console.error("Error updating task: ", error.message);
+      return;
+    }
+
+    fetchTasks();
+  };
+
   const handleDelete = async (id: number) => {
     const { error } = await supabase.from("tasks").delete().eq("id", id);
 
