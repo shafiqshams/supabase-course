@@ -30,6 +30,15 @@ function App() {
     setNewTask(initialState);
   };
 
+  const handleDelete = async (id: number) => {
+    const { error } = await supabase.from("tasks").delete().eq("id", id);
+
+    if (error) {
+      console.error("Error deleting task: ", error.message);
+      return;
+    }
+  };
+
   useEffect(() => {
     const fetchTasks = async () => {
       const { error, data } = await supabase
@@ -105,7 +114,12 @@ function App() {
               <button style={{ padding: "0.5rem 1rem", marginRight: "0.5rem" }}>
                 Edit
               </button>
-              <button style={{ padding: "0.5rem 1rem" }}>Delete</button>
+                <button
+                  onClick={() => handleDelete(task.id)}
+                  style={{ padding: "0.5rem 1rem" }}
+                >
+                  Delete
+                </button>
             </div>
           </div>
         </li>
