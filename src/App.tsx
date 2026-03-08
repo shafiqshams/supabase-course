@@ -42,7 +42,6 @@ function App() {
     fetchTasks();
   };
 
-  useEffect(() => {
     const fetchTasks = async () => {
       const { error, data } = await supabase
         .from("tasks")
@@ -59,6 +58,7 @@ function App() {
       setTasks(data);
     };
 
+  useEffect(() => {
     fetchTasks();
   }, []);
 
