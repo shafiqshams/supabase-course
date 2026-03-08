@@ -47,7 +47,11 @@ function App() {
             }));
           }}
         />
-        <button type="submit" style={{ padding: "0.5rem 1rem" }}>
+        <button
+          disabled={!newTask.title || !newTask.desc}
+          type="submit"
+          style={{ padding: "0.5rem 1rem" }}
+        >
           Add Task
         </button>
       </form>
