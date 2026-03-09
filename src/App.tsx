@@ -125,8 +125,44 @@ function App() {
           }}
         >
           <div>
+              {editTaskId === task.id ? (
+                <>
+                  <input
+                    type="text"
+                    value={editingTask.title}
+                    style={{
+                      width: "100%",
+                      marginBottom: "0.5rem",
+                      padding: "0.5rem",
+                    }}
+                    onChange={(e) => {
+                      setEditingTask((prev) => ({
+                        ...prev,
+                        title: e.target.value,
+                      }));
+                    }}
+                  />
+                  <textarea
+                    style={{
+                      width: "100%",
+                      marginBottom: "0.5rem",
+                      padding: "0.5rem",
+                    }}
+                    value={editingTask.desc}
+                    onChange={(e) => {
+                      setEditingTask((prev) => ({
+                        ...prev,
+                        desc: e.target.value,
+                      }));
+                    }}
+                  />
+                </>
+              ) : (
+                <>
               <h3>{task.title}</h3>
               <p>{task.desc}</p>
+                </>
+              )}
             <div>
               <button style={{ padding: "0.5rem 1rem", marginRight: "0.5rem" }}>
                 Edit
