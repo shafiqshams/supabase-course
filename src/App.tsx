@@ -95,6 +95,7 @@ function App() {
               title: e.target.value,
             }));
           }}
+          value={newTask.title}
         />
         <textarea
           placeholder="Task Description"
@@ -105,6 +106,7 @@ function App() {
               desc: e.target.value,
             }));
           }}
+          value={newTask.desc}
         />
         <button
           disabled={!newTask.title || !newTask.desc}
