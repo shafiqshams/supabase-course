@@ -164,9 +164,38 @@ function App() {
                 </>
               )}
             <div>
-              <button style={{ padding: "0.5rem 1rem", marginRight: "0.5rem" }}>
+                {editTaskId === task.id ? (
+                  <>
+                    <button
+                      onClick={() => {
+                        handleUpdateTask(task.id);
+                        setEditTaskId(null);
+                      }}
+                      style={{ padding: "0.5rem 1rem", marginRight: "0.5rem" }}
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={() => {
+                        setEditTaskId(null);
+                        setEditingTask(initialState);
+                      }}
+                      style={{ padding: "0.5rem 1rem", marginRight: "0.5rem" }}
+                    >
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setEditTaskId(task.id);
+                      setEditingTask(task);
+                    }}
+                    style={{ padding: "0.5rem 1rem", marginRight: "0.5rem" }}
+                  >
                 Edit
               </button>
+                )}
                 <button
                   onClick={() => handleDelete(task.id)}
                   style={{ padding: "0.5rem 1rem" }}
