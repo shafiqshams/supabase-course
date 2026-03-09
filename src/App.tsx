@@ -35,7 +35,10 @@ function App() {
   };
 
   const handleUpdateTask = async (id: number) => {
-    const { error } = await supabase.from("tasks").update(newTask).eq("id", id);
+    const { error } = await supabase
+      .from("tasks")
+      .update(editingTask)
+      .eq("id", id);
 
     if (error) {
       console.error("Error updating task: ", error.message);
