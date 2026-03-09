@@ -18,6 +18,9 @@ function App() {
   const [newTask, setNewTask] = useState(initialState);
   const [tasks, setTasks] = useState<Task[]>([]);
 
+  const [editTaskId, setEditTaskId] = useState<number | null>(null);
+  const [editingTask, setEditingTask] = useState(initialState);
+
   const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
     const { error } = await supabase.from("tasks").insert(newTask).single();
