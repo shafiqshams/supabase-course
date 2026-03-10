@@ -64,7 +64,7 @@ function App() {
       .from("tasks")
       .select("*")
       .order("created_at", {
-        ascending: true,
+        ascending: false,
       });
 
     if (error) {
