@@ -23,40 +23,40 @@ function App() {
 
   const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
-    const { error } = await supabase.from("tasks").insert(newTask).single();
+    const { error, data } = await supabase
+      .from("tasks")
+      .insert(newTask)
+      .select()
+      .single();
 
     if (error) {
       console.error("Error adding task: ", error.message);
       return;
     }
 
+    setTasks((prev) => [data, ...prev]);
     setNewTask(initialState);
-    fetchTasks();
   };
 
   const handleUpdateTask = async (id: number) => {
-    const { error } = await supabase
+    const { error, data } = await supabase
       .from("tasks")
       .update(editingTask)
-      .eq("id", id);
+      .eq("id", id)
+      .select()
+      .single();
 
-    if (error) {
-      console.error("Error updating task: ", error.message);
-      return;
-    }
+    if (error) return console.error("Error updating task: ", error.message);
 
-    fetchTasks();
+    setTasks((prev) => prev.map((task) => (task.id === id ? data : task)));
   };
 
   const handleDelete = async (id: number) => {
     const { error } = await supabase.from("tasks").delete().eq("id", id);
 
-    if (error) {
-      console.error("Error deleting task: ", error.message);
-      return;
-    }
+    if (error) return console.error("Error deleting task: ", error.message);
 
-    fetchTasks();
+    setTasks((prev) => prev.filter((task) => task.id !== id));
   };
 
   const fetchTasks = async () => {
@@ -67,10 +67,7 @@ function App() {
         ascending: false,
       });
 
-    if (error) {
-      console.error("Error fetching task: ", error.message);
-      return;
-    }
+    if (error) return console.error("Error fetching task: ", error.message);
 
     setTasks(data);
   };
