@@ -59,36 +59,36 @@ function App() {
     fetchTasks();
   };
 
-    const fetchTasks = async () => {
-      const { error, data } = await supabase
-        .from("tasks")
-        .select("*")
-        .order("created_at", {
-          ascending: true,
-        });
+  const fetchTasks = async () => {
+    const { error, data } = await supabase
+      .from("tasks")
+      .select("*")
+      .order("created_at", {
+        ascending: true,
+      });
 
-      if (error) {
-        console.error("Error adding task: ", error.message);
-        return;
-      }
+    if (error) {
+      console.error("Error fetching task: ", error.message);
+      return;
+    }
 
-      setTasks(data);
-    };
+    setTasks(data);
+  };
 
   useEffect(() => {
     fetchTasks();
   }, []);
 
   return (
-    <div style={{ maxWidth: "600px", margin: "0 auto", padding: "1rem" }}>
-      <h2>Task Manager CRUD</h2>
+    <div className="container">
+      <h2 className="title">Task Manager</h2>
 
       {/* Form to add a new task */}
-      <form onSubmit={handleSubmit} style={{ marginBottom: "1rem" }}>
+      <form onSubmit={handleSubmit} className="task-form">
         <input
           type="text"
-          placeholder="Task Title"
-          style={{ width: "100%", marginBottom: "0.5rem", padding: "0.5rem" }}
+          placeholder="What needs to be done?"
+          className="input-field"
           onChange={(e) => {
             setNewTask((prev) => ({
               ...prev,
@@ -98,8 +98,9 @@ function App() {
           value={newTask.title}
         />
         <textarea
-          placeholder="Task Description"
-          style={{ width: "100%", marginBottom: "0.5rem", padding: "0.5rem" }}
+          placeholder="Add some details..."
+          className="input-field"
+          style={{ minHeight: "100px", resize: "vertical" }}
           onChange={(e) => {
             setNewTask((prev) => ({
               ...prev,
@@ -111,35 +112,23 @@ function App() {
         <button
           disabled={!newTask.title || !newTask.desc}
           type="submit"
-          style={{ padding: "0.5rem 1rem" }}
+          className="btn btn-primary w-full"
         >
-          Add Task
+          Add New Task
         </button>
       </form>
 
       {/* List of Tasks */}
-      <ul style={{ listStyle: "none", padding: 0 }}>
+      <ul className="task-list">
         {tasks.map((task) => (
-        <li
-            key={task.id}
-          style={{
-            border: "1px solid #ccc",
-            borderRadius: "4px",
-            padding: "1rem",
-            marginBottom: "0.5rem",
-          }}
-        >
-          <div>
+          <li key={task.id} className="task-item">
+            <div className="task-content">
               {editTaskId === task.id ? (
                 <>
                   <input
                     type="text"
                     value={editingTask.title}
-                    style={{
-                      width: "100%",
-                      marginBottom: "0.5rem",
-                      padding: "0.5rem",
-                    }}
+                    className="input-field"
                     onChange={(e) => {
                       setEditingTask((prev) => ({
                         ...prev,
@@ -148,11 +137,8 @@ function App() {
                     }}
                   />
                   <textarea
-                    style={{
-                      width: "100%",
-                      marginBottom: "0.5rem",
-                      padding: "0.5rem",
-                    }}
+                    className="input-field"
+                    style={{ minHeight: "80px", resize: "vertical" }}
                     value={editingTask.desc}
                     onChange={(e) => {
                       setEditingTask((prev) => ({
@@ -164,11 +150,11 @@ function App() {
                 </>
               ) : (
                 <>
-              <h3>{task.title}</h3>
-              <p>{task.desc}</p>
+                  <h3>{task.title}</h3>
+                  <p>{task.desc}</p>
                 </>
               )}
-            <div>
+              <div className="button-group">
                 {editTaskId === task.id ? (
                   <>
                     <button
@@ -176,40 +162,42 @@ function App() {
                         handleUpdateTask(task.id);
                         setEditTaskId(null);
                       }}
-                      style={{ padding: "0.5rem 1rem", marginRight: "0.5rem" }}
+                      className="btn btn-primary"
                     >
-                      Save
+                      Save Changes
                     </button>
                     <button
                       onClick={() => {
                         setEditTaskId(null);
                         setEditingTask(initialState);
                       }}
-                      style={{ padding: "0.5rem 1rem", marginRight: "0.5rem" }}
+                      className="btn btn-outline"
                     >
                       Cancel
                     </button>
                   </>
                 ) : (
-                  <button
-                    onClick={() => {
-                      setEditTaskId(task.id);
-                      setEditingTask(task);
-                    }}
-                    style={{ padding: "0.5rem 1rem", marginRight: "0.5rem" }}
-                  >
-                Edit
-              </button>
+                  <>
+                    <button
+                      onClick={() => {
+                        setEditTaskId(task.id);
+                        setEditingTask(task);
+                      }}
+                      className="btn btn-outline"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(task.id)}
+                      className="btn btn-danger"
+                    >
+                      Delete
+                    </button>
+                  </>
                 )}
-                <button
-                  onClick={() => handleDelete(task.id)}
-                  style={{ padding: "0.5rem 1rem" }}
-                >
-                  Delete
-                </button>
+              </div>
             </div>
-          </div>
-        </li>
+          </li>
         ))}
       </ul>
     </div>
