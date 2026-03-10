@@ -59,20 +59,20 @@ function App() {
     setTasks((prev) => prev.filter((task) => task.id !== id));
   };
 
-  const fetchTasks = async () => {
-    const { error, data } = await supabase
-      .from("tasks")
-      .select("*")
-      .order("created_at", {
-        ascending: false,
-      });
-
-    if (error) return console.error("Error fetching task: ", error.message);
-
-    setTasks(data);
-  };
-
   useEffect(() => {
+    const fetchTasks = async () => {
+      const { error, data } = await supabase
+        .from("tasks")
+        .select("*")
+        .order("created_at", {
+          ascending: false,
+        });
+
+      if (error) return console.error("Error fetching task: ", error.message);
+
+      setTasks(data);
+    };
+
     fetchTasks();
   }, []);
 
