@@ -1,5 +1,6 @@
 import { type ChangeEvent, type SubmitEvent, useState } from "react";
 import "../App.css";
+import supabase from "../lib/supabase";
 
 export const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -8,6 +9,24 @@ export const Auth = () => {
 
   const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
+
+    if (isSignUp) {
+      const { error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (signUpError)
+        return console.error("Error signing up the user", signUpError);
+    } else {
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (signInError)
+        return console.error("Error signing in the user", signInError);
+    }
   };
 
   return (
