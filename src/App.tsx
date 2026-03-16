@@ -22,6 +22,10 @@ function App() {
     };
 
     fetchSession();
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   const handleLogout = async () => {
