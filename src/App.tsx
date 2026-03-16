@@ -17,7 +17,18 @@ function App() {
 
     fetchSession();
   }, []);
-  return session ? <TaskManager session={session} /> : <Auth />;
+
+  return session ? (
+    <>
+      <button type="submit" className="btn btn-primary" onClick={handleLogout}>
+        Log Out
+      </button>
+
+      <TaskManager session={session} />
+    </>
+  ) : (
+    <Auth />
+  );
 }
 
 export default App;
