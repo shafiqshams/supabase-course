@@ -17,12 +17,7 @@ function App() {
 
     fetchSession();
   }, []);
-  return (
-    <>
-      <TaskManager />
-      <Auth />
-    </>
-  );
+  return session ? <TaskManager session={session} /> : <Auth />;
 }
 
 export default App;
