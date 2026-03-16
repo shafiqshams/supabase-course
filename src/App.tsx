@@ -7,6 +7,12 @@ import TaskManager from "./pages/TaskManager";
 function App() {
   const [session, setSession] = useState<Session | null>(null);
   useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
     const fetchSession = async () => {
       const {
         data: { session: currentSession },
