@@ -18,6 +18,10 @@ function App() {
     fetchSession();
   }, []);
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
+
   return session ? (
     <>
       <button type="submit" className="btn btn-primary" onClick={handleLogout}>
