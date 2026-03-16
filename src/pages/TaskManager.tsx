@@ -1,3 +1,4 @@
+import type { Session } from "@supabase/supabase-js";
 import { type SubmitEvent, useEffect, useState } from "react";
 import "../App.css";
 import supabase from "../lib/supabase";
@@ -14,7 +15,7 @@ interface Task {
   created_at: string;
 }
 
-function TaskManager() {
+function TaskManager({ session }: { session: Session }) {
   const [newTask, setNewTask] = useState(initialState);
   const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -25,7 +26,7 @@ function TaskManager() {
     e.preventDefault();
     const { error, data } = await supabase
       .from("tasks")
-      .insert(newTask)
+      .insert({ ...newTask, email: session?.user?.email })
       .select()
       .single();
 
