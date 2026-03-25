@@ -24,7 +24,7 @@ function TaskManager({ session }: { session: Session }) {
 
   const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
-    const { error, data } = await supabase
+    const { error } = await supabase
       .from("tasks")
       .insert({ ...newTask, email: session?.user?.email })
       .select()
@@ -35,7 +35,7 @@ function TaskManager({ session }: { session: Session }) {
       return;
     }
 
-    setTasks((prev) => [data, ...prev]);
+    // setTasks((prev) => [data, ...prev]);
     setNewTask(initialState);
   };
 
