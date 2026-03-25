@@ -61,6 +61,27 @@ function TaskManager({ session }: { session: Session }) {
   };
 
   useEffect(() => {
+    // Adding subscription for real-time updates
+    const channel = supabase.channel("realtime-tasks");
+    channel
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "tasks",
+        },
+        (payload) => {
+          const newTask = payload.new as Task;
+          setTasks((prev) => [newTask, ...prev]);
+        },
+      )
+      .subscribe((status) => {
+        if (status === "SUBSCRIBED") {
+          console.log("Subscribed to realtime updates");
+        }
+      });
+
     const fetchTasks = async () => {
       const { error, data } = await supabase
         .from("tasks")
